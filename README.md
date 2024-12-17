@@ -101,14 +101,27 @@ Other recommended projects:<br>
 1. Install dependent packages
 
     ```bash
+    # Tested on Ubuntu 22.04
+    
+    # It is best to use a Python virtual environment
+    cd ~
+    python -m venv python-venv
+    source python-venv/bin/activate
+    
     # Install basicsr - https://github.com/xinntao/BasicSR
     # We use BasicSR for both training and inference
     pip install basicsr
     # facexlib and gfpgan are for face enhancement
     pip install facexlib
     pip install gfpgan
+    # Install ffmpeg-python, not ffmpeg - https://github.com/kkroening/ffmpeg-python/issues/174
+    pip install ffmpeg-python
     pip install -r requirements.txt
     python setup.py develop
+    
+    # May get "ModuleNotFoundError: No module named 'torchvision.transforms.functional_tensor'" when running Real-ESRGAN
+    # Fix - https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/13985
+    sed -i 's/from torchvision.transforms.functional_tensor import rgb_to_grayscale/from torchvision.transforms.functional import rgb_to_grayscale/' python-venv/lib/python3.10/site-packages/basicsr/data/degradations.py
     ```
 
 ---
